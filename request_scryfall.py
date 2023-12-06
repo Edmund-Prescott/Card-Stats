@@ -1,6 +1,8 @@
 import os
 import requests
-import csv
+from sqlalchemy import create_engine
+from config import DB_CONFIG as db
+import psycopg2
 
 
 def get_cards(card_names):
@@ -27,5 +29,27 @@ def get_cards(card_names):
     return results
 
 
-cards = ["Forest", "Lightning Bolt"]
-get_cards(cards)
+# cards = ["Forest", "Lightning Bolt"]
+# get_cards(cards)
+
+from sqlalchemy import create_engine, Column, Integer, String, Sequence
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+# Replace 'your_username', 'your_password', 'your_host', 'your_database' with your actual PostgreSQL credentials
+DATABASE_URL = (
+    f"postgresql://{db['user']}:{db['password']}@{db['host']}/{db['database']}"
+)
+
+
+try:
+    # Attempt to create an engine and connect to the database
+    engine = create_engine(DATABASE_URL)
+    connection = engine.connect()
+    print("Connected to the database successfully!")
+except Exception as e:
+    print(f"Failed to connect to the database. Error: {e}")
+finally:
+    # Close the connection if it was opened
+    if "connection" in locals():
+        connection.close()
