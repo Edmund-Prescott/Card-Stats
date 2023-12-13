@@ -1,8 +1,29 @@
-import os
+import json, sys
 import requests
-from sqlalchemy import create_engine
-from config import DB_CONFIG as db
-import psycopg2
+from config import DB_CONFIG as config
+from sqlalchemy.orm import declarative_base
+
+from sqlalchemy import (
+    create_engine,
+    Column,
+    JSON,
+    MetaData,
+    String,
+)
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
+DATABASE_URL = f"postgresql://{config['user']}:{config['password']}@{config['host']}/{config['database']}"
+
+
+# Define the ORM model
+Base = declarative_base(metadata=MetaData(schema="cards_json"))  # Specify the schema
+
+
+class Card(Base):
+    __tablename__ = "cards"
+    id = Column(String(50), primary_key=True)
+    response_data = Column(JSON)
 
 
 def get_cards(card_names):
@@ -20,8 +41,8 @@ def get_cards(card_names):
         if response.status_code == 200:
             card_data = response.json()
 
-            print(card_data)
-            # TODO: Save cards to Postgres seever
+            database_action(save_card, card_data)
+
         else:
             # If the request was not successful, print an error message
             print(f"Error: {response.status_code}")
@@ -29,27 +50,59 @@ def get_cards(card_names):
     return results
 
 
-# cards = ["Forest", "Lightning Bolt"]
-# get_cards(cards)
+def save_card(session, json_data):
+    try:
+        # Insert a row into the "cards" table with JSON data
+        new_card = Card(id=json_data["name"], response_data=json.dumps(json_data))
+        session.add(new_card)
+        session.commit()
+        print("Card saved successfully!")
+    except Exception as e:
+        # Rollback in case of an error
+        session.rollback()
+        print(f"Failed to save card. Error: {e}")
+    finally:
+        # Close the session
+        session.close()
 
-from sqlalchemy import create_engine, Column, Integer, String, Sequence
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
 
-# Replace 'your_username', 'your_password', 'your_host', 'your_database' with your actual PostgreSQL credentials
-DATABASE_URL = (
-    f"postgresql://{db['user']}:{db['password']}@{db['host']}/{db['database']}"
-)
+def read_card(session, name):
+    try:
+        card = session.query(Card).filter_by(id=name).first()
+        print("Card read successfully!")
+        return json.loads(card)
+    except Exception as e:
+        # Rollback in case of an error
+        session.rollback()
+        print(f"Failed to read card. Error: {e}")
+    finally:
+        # Close the session
+        session.close()
 
 
-try:
-    # Attempt to create an engine and connect to the database
-    engine = create_engine(DATABASE_URL)
-    connection = engine.connect()
-    print("Connected to the database successfully!")
-except Exception as e:
-    print(f"Failed to connect to the database. Error: {e}")
-finally:
-    # Close the connection if it was opened
-    if "connection" in locals():
-        connection.close()
+def database_action(function, data=None):
+    try:
+        # Create the SQLAlchemy engine
+        engine = create_engine(DATABASE_URL, echo=True)
+
+        # Create the table if it doesn't exist
+        Base.metadata.create_all(bind=engine)
+
+        # Create a session
+        session = sessionmaker(bind=engine)()
+
+        # Execute action on database
+        if data is None:
+            function(session)
+        else:
+            function(session, data)
+
+    except Exception as e:
+        print(f"Failed to connect to the database. Error: {e}")
+    finally:
+        session.close()
+        print("Session closed")
+
+
+# get_cards(["Forest"])
+database_action(read_card)
