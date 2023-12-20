@@ -1,0 +1,8 @@
+<!-- File Upload Form -->
+<!-- <div>
+    <form class="flex-container" action="/upload" method="post" enctype="multipart/form-data">
+        <label class="flex-item" for="fileInput">Choose a file:</label>
+        <input class="flex-item" type="file" id="fileInput" name="fileInput" accept=".txt, .pdf, .doc, .docx">
+        <button class="flex-item" type="submit">Upload</button>
+    </form>
+</div> -->

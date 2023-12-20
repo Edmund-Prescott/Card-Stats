@@ -7,26 +7,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <header><h1>Deck Stats</h1></header>
+<nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Services</a>
+    <a href="#">Contact</a>
+</nav>
 <body>
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
-    </nav>
-
-<div class="centered-div stacked-container">
-    <button class="stacked-tag">Login/Sign Up</button>
-    <button class="stacked-tag">Guest</button>
+    
+<div class="login-div">
+    <button>Login/Sign Up</button>
+    <button>Guest</button>
 </div>
-<!-- File Upload Form -->
-<!-- <div>
-    <form class="flex-container" action="/upload" method="post" enctype="multipart/form-data">
-        <label class="flex-item" for="fileInput">Choose a file:</label>
-        <input class="flex-item" type="file" id="fileInput" name="fileInput" accept=".txt, .pdf, .doc, .docx">
-        <button class="flex-item" type="submit">Upload</button>
-    </form>
-</div> -->
+
 
 </body>
 </html>
