@@ -6,6 +6,8 @@
     <title>Flask + CSS</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
+
+<body>
 <header><h1>Deck Stats</h1></header>
 <nav>
     <a href="#">Home</a>
@@ -13,11 +15,11 @@
     <a href="#">Services</a>
     <a href="#">Contact</a>
 </nav>
-<body>
-    
-<div class="login-div">
-    <button>Login/Sign Up</button>
-    <button>Guest</button>
+<div class="container">
+    <div class="login-div">
+        <button><b>Login/Sign Up</b></button>
+        <button><b>Guest</b></button>
+    </div>
 </div>
 
 
