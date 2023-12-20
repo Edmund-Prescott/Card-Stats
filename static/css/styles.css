@@ -1,0 +1,74 @@
+/* Reset default margin and padding on html and body */
+html, body {
+    margin: 0;
+    padding: 0;
+    color: #fff;
+}
+
+body {
+    background-image: url('../images/goblin_flectomancer.jpg');
+}
+
+/* Apply styles to the header */
+header {
+    background-color: #333;   /* Background color of the header */
+    color: #fff;              /* Text color of the header */
+    width: 100vw;             /* Full width of the viewport */
+    padding: 30px;            /* Optional: Add padding to the header */
+    box-sizing: border-box;   /* Include padding and borders in the total width */
+}
+
+/* Optional: Apply styles to the content within the header */
+header h1 {
+    margin: 0;  /* Remove margin from the heading */
+    text-align: center;
+}
+
+nav {
+    background-color: #333;
+    padding: 10px;
+    display: flex;
+    justify-content: center; /* Center the items horizontally */
+}
+
+/* Style for the navigation links */
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+/* Hover effect for the navigation links */
+nav a:hover {
+    text-decoration: underline;
+}
+
+.centered-div {
+    width: 200px; /* Set a width for the centered div */
+    height: 200px; /* Set a height for the centered div */
+    background-color: #f0f0f0; /* Optional: Background color for visibility */
+    color: #333;
+    text-align: center; /* Optional: Center text horizontally within the div */
+    line-height: 200px; /* Optional: Center text vertically within the div */
+    border: 5px solid;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+}
+
+.stacked-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+}
+
+/* Apply styles to each centered and stacked tag */
+.stacked-tag {
+    background-color: #f0f0f0;
+    margin-bottom: 10px; /* Optional: Add space between stacked tags */
+    padding: 10px;
+    box-sizing: border-box;
+}
